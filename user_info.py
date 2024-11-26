@@ -38,7 +38,8 @@ def get_course_number() -> str:
     return input("Course Number <<< ")
 
 def get_course_GE() -> str:
-    GE_categories = ['ANY', 'GE-1A', 'GE-1B', 'GE-2', 'GE-3', 'GE-4',
+    # removed 'ANY' category
+    GE_categories = ['GE-1A', 'GE-1B', 'GE-2', 'GE-3', 'GE-4',
                      'GE-5A', 'GE-5B', 'GE-6', 'GE-7', 'GE-8']
 
     print("Which GE category would you like to select?")

@@ -1,19 +1,25 @@
-import requests, json
-import user_info
+import CourseList
+import API_calls
 
-# all_courses = requests.get(f"https://api.peterportal.org/rest/v0/schedule/soc?term={year}%20{quarter}&department={department}&courseNumber={course_number}").json()
+def run():
 
-year, quarter, GE_category = user_info.get_all_GE_info()
-all_courses = requests.get(f"https://api.peterportal.org/rest/v0/schedule/soc?term={year}%20{quarter}&ge={GE_category}").json()
+    retrieved_courses = API_calls.get_all_GE_courses()
+    course_list = CourseList.CourseList(retrieved_courses)
 
-# all_courses = requests.get(f"https://api.peterportal.org/rest/v0/grades/calculated?code={course_code}").json()
-# average_gpa = all_courses['gradeDistribution']['average_gpa']
+    for course in course_list.courses:
+        print(course.title)
 
-# file = open("courses.json", 'w')
-# json.dump(all_courses, file, indent = 4) # type: ignore
+    # retrieved_courses = requests.get(f"https://api.peterportal.org/rest/v0/grades/calculated?code={course_code}").json()
+    # average_gpa = retrieved_courses['gradeDistribution']['average_gpa']
 
-# relevant_coursed = []
-# for course in all_courses["courseList"]:
-#     print(course["year"])
+    # file = open("courses.json", 'w')
+    # json.dump(retrieved_courses, file, indent = 4) # type: ignore
 
-# print(round(average_gpa, 2))
+    # relevant_coursed = []
+    # for course in retrieved_courses["courseList"]:
+    #     print(course["year"])
+
+    # print(round(average_gpa, 2))
+
+if __name__ == "__main__":
+    run()
