@@ -17,8 +17,6 @@ class CourseList:
 
         # info to get set up
         self.schools = []
-        self.departments = []
-        self.courses = []
 
         # set up
         self.set_up_list()
@@ -32,20 +30,49 @@ class CourseList:
         for school in schools:
             school_added = School(school)
             self.schools.append(school_added)
-            self.set_up_departments(school_added.departments)
+            school_added.departments = self.set_up_departments(school_added.departments)
 
     # set up departments
-    def set_up_departments(self, departments):
+    def set_up_departments(self, departments) -> list:
+        all_departments = []
         for department in departments:
             department_added = Department(department)
-            self.departments.append(department_added)
-            self.set_up_courses(department_added.courses)
+            all_departments.append(department_added)
+            department_added.courses = self.set_up_courses(department_added.courses)
+        return all_departments
 
     # set up courses
-    def set_up_courses(self, courses):
+    def set_up_courses(self, courses) -> list:
+        all_courses = []
         for course in courses:
             course_added = Course(course)
-            self.courses.append(course_added)
+            all_courses.append(course_added)
+            course_added.sections = self.set_up_sections(course_added.sections)
+        return all_courses
+
+    # set up sections
+    def set_up_sections(self, sections) -> list:
+        all_sections = []
+        for section in sections:
+            section_added = Section(section)
+            all_sections.append(section_added)
+        return all_sections
+
+    def get_lectures(self) -> tuple:
+        """
+        goes through every school, department,
+        course, and section to get a tuple of all
+        lectures. *ONLY LECTURES*
+        :return: tuple of all lectures in the CourseList
+        """
+        return tuple(
+            section
+            for school in self.schools
+            for department in school.departments
+            for course in department.courses
+            for section in course.sections
+            if section.is_lecture()
+        )
 
 class School:
     def __init__(self, school):
@@ -69,6 +96,7 @@ class Section:
     def __init__(self, section):
         # section info
         self.code = section['sectionCode']
+        self.type = section['sectionType']
         self.number = section['sectionNum']
         self.units = section['units']
 
@@ -85,3 +113,7 @@ class Section:
         # restrictions
         self.restrictions = section['restrictions']
         self.status = section['status']
+    def is_lecture(self) -> bool:
+        return self.type == 'Lec'
+    def is_full(self) -> bool:
+        return self.status == "OPEN"

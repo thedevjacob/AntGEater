@@ -6,8 +6,13 @@ def run():
     retrieved_courses = API_calls.get_all_GE_courses()
     course_list = CourseList.CourseList(retrieved_courses)
 
-    for course in course_list.courses:
-        print(course.title)
+    all_lectures = course_list.get_lectures()
+
+    for lecture in all_lectures:
+        if lecture.is_full():
+            print("FULL LECTURE", lecture.code)
+        else:
+            print("OPEN LECTURE", lecture.code)
 
     # retrieved_courses = requests.get(f"https://api.peterportal.org/rest/v0/grades/calculated?code={course_code}").json()
     # average_gpa = retrieved_courses['gradeDistribution']['average_gpa']
