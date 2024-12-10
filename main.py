@@ -1,5 +1,5 @@
-import CourseList
-import API_calls
+from soft import API_calls, CourseList
+
 
 def run():
 
@@ -8,23 +8,17 @@ def run():
 
     all_lectures = course_list.get_lectures()
 
-    for lecture in all_lectures:
-        if lecture.is_full():
-            print("FULL LECTURE", lecture.code)
-        else:
-            print("OPEN LECTURE", lecture.code)
+    print(">>> one moment please... RETRIEVING GPAS <<<\n")
 
-    # retrieved_courses = requests.get(f"https://api.peterportal.org/rest/v0/grades/calculated?code={course_code}").json()
-    # average_gpa = retrieved_courses['gradeDistribution']['average_gpa']
+    open_lectures = [lecture for lecture in all_lectures if ((not lecture.full()) and lecture.get_gpa())]
+    open_lectures.sort(key=lambda item: item.get_gpa())
 
-    # file = open("courses.json", 'w')
-    # json.dump(retrieved_courses, file, indent = 4) # type: ignore
+    if not open_lectures:
+        print("-> ALL LECTURES ARE FULL FOR THIS GE :( <-")
 
-    # relevant_coursed = []
-    # for course in retrieved_courses["courseList"]:
-    #     print(course["year"])
-
-    # print(round(average_gpa, 2))
+    for lecture in open_lectures:
+        lecture_info = f"{lecture.course.title} - AVERAGE GPA of {str(round(lecture.get_gpa(), 2))} - (COURSE CODE: {lecture.code}, COURSE #: {lecture.course.number})"
+        print(lecture_info)
 
 if __name__ == "__main__":
     run()
