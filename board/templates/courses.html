@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses for {{ ge_category }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        h1, p {
+            text-align: center;
+        }
+        .course {
+            margin: 10px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Available Courses for {{ ge_category }}</h1>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% else %}
+        {% for lecture in courses %}
+            <div class="course">
+                <p><strong>{{lecture.course.department.code}}, {{ lecture.course.title }}</strong> <i>({{lecture.course.department.name}})</i></p>
+                <p>Average GPA: {{ "%.2f" % lecture.get_gpa() }}</p>
+                <p>Course Code: {{ lecture.code }}, Course #: {{ lecture.course.number }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
