@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses for {{ ge_category }}</title>
+    <title>{% if ge_category %}Courses for {{ ge_category }}{% else %}No Courses Available{% endif %}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,6 +13,9 @@
         h1, p {
             text-align: center;
         }
+        a {
+            text-decoration: none;
+        }
         .course {
             margin: 10px auto;
             padding: 10px;
@@ -21,10 +24,32 @@
             background-color: #fff;
             max-width: 600px;
         }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #f4f4f4;
+            color: #333;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none; /* Remove underline for <a> */
+        }
+        button:hover {
+            background-color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
-    <h1>Available Courses for {{ ge_category }}</h1>
+    <h1>
+    {% if ge_category %}
+        Available Courses for {{ ge_category }}
+    {% else %}
+        No Courses Available
+    {% endif %}
+    </h1>
     {% if message %}
         <p>{{ message }}</p>
     {% else %}
@@ -36,5 +61,10 @@
             </div>
         {% endfor %}
     {% endif %}
+
+    <!-- Back Button -->
+    <a href="/">
+        <button type="button">Back to Home</button>
+    </a>
 </body>
 </html>

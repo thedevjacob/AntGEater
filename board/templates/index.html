@@ -12,24 +12,71 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f9;
+            background-color: #f4f4f9; /* Light grey background */
         }
         .dropdown-container {
             text-align: center;
         }
+
         select {
             padding: 10px 15px;
             font-size: 16px;
             border-radius: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid #ccc; /* Light grey border */
+            background-color: #f4f4f4; /* Match button background */
+            color: #333; /* Dark grey text */
             cursor: pointer;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc; /* Match border */
+            background-color: #f4f4f4; /* Neutral grey */
+            color: #333; /* Dark grey text */
+            cursor: pointer;
+            text-align: center;
+        }
+        button:hover {
+            background-color: #e0e0e0; /* Slightly darker grey on hover */
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            color: #f4f4f4; /* White text for contrast */
+            font-size: 20px;
+            text-align: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay .spinner {
+            margin: 20% auto;
+            width: 50px;
+            height: 50px;
+            border: 8px solid #e0e0e0; /* Lighter grey border */
+            border-top: 8px solid #333; /* Dark grey spinner top */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="dropdown-container">
         <h1>Select a GE Category</h1>
-        <form action="/ge-courses" method="GET">
+        <form action="/ge-courses" method="GET" id="geForm">
             <select name="ge_category">
                 {% for category in ge_categories %}
                     <option value="{{ category }}">{{ category }}</option>
@@ -39,5 +86,21 @@
             <button type="submit">View Courses</button>
         </form>
     </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Finding classes and ranking by GPA... Please wait!</p>
+    </div>
+
+    <script>
+        // Show loading overlay when form is submitted
+        const form = document.getElementById('geForm');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        form.addEventListener('submit', function() {
+            loadingOverlay.style.display = 'block';
+        });
+    </script>
 </body>
 </html>
